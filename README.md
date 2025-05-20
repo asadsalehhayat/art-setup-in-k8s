@@ -14,7 +14,7 @@ unzip art-8.7.zip
 
 After unzipping, ensure that the art.war file is located at art/art-8.7/art.war relative to the directory where you will place your Dockerfile. For example, if your Dockerfile is in ./art-deployment/, then art.war should be in ./art-deployment/art/art-8.7/art.war.
 
-##2. Create the Dockerfile
+## 2. Create the Dockerfile
 Create a file named Dockerfile in the root of your deployment directory (e.g., art-deployment/) with the following content:
 
 
