@@ -1,3 +1,16 @@
+# ART Application Deployment on Kubernetes
+
+This guide provides step-by-step instructions to deploy the ART application on a Kubernetes cluster using Docker.
+
+## 1. Download and Extract ART
+
+Download the ART application archive and extract the `art.war` file:
+
+```bash
+wget https://netix.dl.sourceforge.net/project/art/art/8.7/art-8.7.zip
+unzip art-8.7.zip
+
+```
 
 1. Download and Extract ART
 First, download the ART application archive and extract the art.war file.
