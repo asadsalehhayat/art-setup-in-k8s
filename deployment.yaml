@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: art-svc
+  namespace: asad
+  labels:
+    app: art
+spec:
+  type: NodePort
+  selector:
+    app: art
+  ports:
+  - port: 80
+    targetPort: 8080
+    nodePort: 31180
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: art
+  name: art-deployment
+  namespace: asad
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: art
+  template:
+    metadata:
+      labels:
+        app: art
+    spec:
+      containers:
+      - image: art:latest
+        name: art
+        ports:
+        - containerPort: 8080
