@@ -32,7 +32,7 @@ This command builds a Docker image named art with the tag latest. This image wil
 ## 4. Load the Image into Kubernetes Nodes
 Depending on your container runtime (Docker or containerd), load the image:
 
-# Option A: Docker Runtime
+### Option A: Docker Runtime
 If your Kubernetes nodes use Docker:
 
 ```bash
@@ -43,7 +43,7 @@ docker load -i /tmp/art.tar
 ```
 Repeat for each worker node if the image is not in a shared registry.
 
-Option B: Containerd Runtime
+### Option B: Containerd Runtime
 If your Kubernetes nodes use containerd:
 
 ```bash
