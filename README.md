@@ -27,14 +27,50 @@ docker build -t art:latest .
 
 This command builds a Docker image named art with the tag latest. This image will be used by your Kubernetes Deployment.
 
-## 4. Create the Kubernetes Deployment and Service File
+
+
+## 4. Load the Image into Kubernetes Nodes
+Depending on your container runtime (Docker or containerd), load the image:
+
+# Option A: Docker Runtime
+If your Kubernetes nodes use Docker:
+
+```bash
+docker save art:latest -o art.tar
+scp art.tar <k8s-node>:/tmp/
+ssh <k8s-node>
+docker load -i /tmp/art.tar
+```
+Repeat for each worker node if the image is not in a shared registry.
+
+Option B: Containerd Runtime
+If your Kubernetes nodes use containerd:
+
+```bash
+docker save art:latest -o art.tar
+scp art.tar <k8s-node>:/tmp/
+ssh <k8s-node>
+ctr -n k8s.io images import /tmp/art.tar
+Use ctr -n k8s.io images ls to confirm the image is available.
+```
+
+
+
+
+
+
+
+
+
+
+## 5. Create the Kubernetes Deployment and Service File
 Create a file named art-deployment.yaml with the following Kubernetes configuration. This file defines both a Service to expose ART and a Deployment to manage its Pods.
 
 Service (art-svc): Exposes the ART application on port 80 internally and on NodePort 31180 externally. It targets port 8080 on the ART container.
 
 Deployment (art-deployment): Creates a single replica of the ART application using the art:latest Docker image.
 
-## 5. Deploy to Kubernetes
+## 6. Deploy to Kubernetes
 Apply the Kubernetes YAML file to your cluster. First, ensure the asad namespace exists, then deploy the resources.
 
 ```bash
@@ -42,7 +78,7 @@ kubectl create namespace asad # Skip if namespace already exists
 kubectl apply -f art-deployment.yaml
 ```
 
-## 6. Verify the Deployment
+## 7. Verify the Deployment
 After applying the configuration, verify that your Pods and Service are running as expected.
 
 ```bash
@@ -51,20 +87,17 @@ kubectl get svc -n asad art-svc
 ```
 You should see your ART Pod in a Running state and the art-svc showing the NodePort mapping (e.g., 80:31180/TCP).
 
-## 7. Access ART
+## 8. Access ART
 Once the deployment is successful, you can access ART using the IP address of any of your Kubernetes Nodes and the specified NodePort.
 
 Get Node IP:
+Get the EXTERNAL-IP of one of your worker nodes:
 
-If using Minikube:
-
-minikube ip
-
-For other clusters, get the EXTERNAL-IP of one of your worker nodes:
-
+```bash
 kubectl get nodes -o wide
+```
 
-Access ART in your browser:
+## 9. Access ART in your browser:
 Open your web browser and navigate to:
 
 http://<Node-IP-Address>:31180/art/
@@ -76,16 +109,8 @@ ImagePullBackOff:
 
 Ensure your Docker image art:latest is available to your Kubernetes cluster.
 
-
 For production clusters, push your image to a Docker registry (e.g., Docker Hub, Google Container Registry) and update the image field in art-deployment.yaml to point to the registry path (e.g., your-registry/art:latest).
 
-Pod CrashLoopBackOff:
-
-Check the logs of the failing Pod to diagnose the issue:
-
-kubectl logs -n asad <pod-name>
-
-(Replace <pod-name> with the actual name of your ART Pod, e.g., art-deployment-xxxxx-yyyyy).
 
 Service not accessible:
 
