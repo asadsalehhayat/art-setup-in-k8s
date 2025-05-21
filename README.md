@@ -37,15 +37,18 @@ Deployment (art-deployment): Creates a single replica of the ART application usi
 ## 5. Deploy to Kubernetes
 Apply the Kubernetes YAML file to your cluster. First, ensure the asad namespace exists, then deploy the resources.
 
+```bash
 kubectl create namespace asad # Skip if namespace already exists
 kubectl apply -f art-deployment.yaml
+```
 
 ## 6. Verify the Deployment
 After applying the configuration, verify that your Pods and Service are running as expected.
 
+```bash
 kubectl get pods -n asad -l app=art
 kubectl get svc -n asad art-svc
-
+```
 You should see your ART Pod in a Running state and the art-svc showing the NodePort mapping (e.g., 80:31180/TCP).
 
 ## 7. Access ART
