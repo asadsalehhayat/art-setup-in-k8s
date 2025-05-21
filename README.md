@@ -21,7 +21,9 @@ Create a file named Dockerfile in the root of your deployment directory (e.g., a
 ## 3. Build the Docker Image
 Navigate to the directory containing your Dockerfile and the art directory (which contains art-8.7/art.war), then build the Docker image.
 
+```bash
 docker build -t art:latest .
+```
 
 This command builds a Docker image named art with the tag latest. This image will be used by your Kubernetes Deployment.
 
